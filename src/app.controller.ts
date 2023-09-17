@@ -1,16 +1,20 @@
 import { Controller, Get } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
+import { PinoLogger, InjectPinoLogger } from 'nestjs-pino';
 import { AppService } from './app.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Controller()
 export class AppController {
-  private readonly logger = new Logger(AppController.name);
-
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    @InjectPinoLogger(AppController.name)
+    private readonly pinoLogger: PinoLogger,
+    private readonly appService: AppService
+  ) {}
 
   @Get('api/hello')
   getHello(): string {
-    this.logger.log('Processing request in AppController.');
+    this.pinoLogger.assign({ user_id: uuidv4() });
+    this.pinoLogger.info('Processing request in AppController.');
     return this.appService.getHello();
   }
 }
