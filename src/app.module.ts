@@ -33,7 +33,21 @@ import { v4 as uuidv4 } from 'uuid';
               req: () => undefined,
               res: () => undefined,
               err: (error) => error.stack
-            }
+            },
+            transport: config.get<boolean>('LOCAL', true)
+              ? {
+                target: 'pino-pretty'
+              }
+              : {
+                target: 'pino-socket',
+                options: {
+                  address: config.get<string>('LOGSTASH_HOST', 'localhost'),
+                  port: config.get<number>('LOGSTASH_PORT', 5044),
+                  mode: 'tcp',
+                  reconnect: true,
+                  recovery: true
+                }
+              }
           },
           renameContext: 'logger_name'
         };
@@ -43,4 +57,4 @@ import { v4 as uuidv4 } from 'uuid';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
