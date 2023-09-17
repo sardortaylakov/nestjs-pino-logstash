@@ -8,7 +8,7 @@ export class AppController {
 
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('api/hello')
   getHello(): string {
     this.logger.log('Processing request in AppController.');
     return this.appService.getHello();
