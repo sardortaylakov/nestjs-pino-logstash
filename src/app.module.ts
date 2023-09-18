@@ -57,4 +57,4 @@ import { v4 as uuidv4 } from 'uuid';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
